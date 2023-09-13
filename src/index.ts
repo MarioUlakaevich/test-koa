@@ -6,7 +6,7 @@ import {startScheduler} from './scheduler';
 
 const app = new Koa();
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 3000
 
 app.use(bodyParser({
   enableTypes: ['json', 'form'],

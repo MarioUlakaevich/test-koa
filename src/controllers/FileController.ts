@@ -1,6 +1,5 @@
 import { Context } from 'koa';
 import File from '../models/File';
-import downloadQueue from '../queue';
 import downloadService from '../services/downloadService';
 
 class FileController {
@@ -9,11 +8,16 @@ class FileController {
     try {
       const { url } = ctx.request.body as any;
 
-      downloadQueue.add({ url });
+      const files = await downloadService(url);
+
+      for(const file of files){
+
+          await File.create(file);
+      }
 
       
-      ctx.status = 201;
-      ctx.body = 'Your request is being processed. You will be notified upon completion.';
+      ctx.status = 200;
+      ctx.body = files;
     } catch (error) {
       ctx.status = 400;
       ctx.body = error;
