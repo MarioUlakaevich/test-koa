@@ -3,6 +3,9 @@ import bodyParser from "koa-bodyparser"
 import router from './router/index';
 import {dbConnect} from './db-connect';
 import {startScheduler} from './scheduler';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = new Koa();
 
