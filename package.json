@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "pm2": "pm2 start --interpreter ./node_modules/.bin/ts-node --name test-project src/index.ts"
+    "pm2": "pm2 start --interpreter ./node_modules/.bin/ts-node --name test-project src/index.ts -i max"
   },
   "keywords": [],
   "author": "",
