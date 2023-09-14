@@ -3,6 +3,10 @@ import File from '../models/File';
 import downloadService from '../services/downloadService';
 
 class FileController {
+
+  static async init(ctx: Context) {
+    ctx.response.body = "Hello"
+  }
   // Создание файла (Create)
   static async create(ctx: Context) {
     try {
