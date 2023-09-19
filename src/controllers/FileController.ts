@@ -14,6 +14,15 @@ class FileController {
   static async create(ctx: Context) {
     try {
       const { url } = ctx.request.body as any;
+
+      try{
+        new URL(url);
+      }catch(e){
+        ctx.status = 400;
+        ctx.body = "Not a URL";
+        return e;
+      }
+
       this.urls.push(url);
 
       downloadQueue.add({ url });
