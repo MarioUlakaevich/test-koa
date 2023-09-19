@@ -3,8 +3,9 @@ import File from './models/File';
 import FileController from './controllers/FileController';
 
 export async function checkForNewFiles() {
-  FileController.update();
-  FileController.delete();
+  for(const url in FileController.urls){
+    FileController.update(url);
+  }
 }
 
 // Запуск задачи каждые 30 минут

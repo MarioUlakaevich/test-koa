@@ -1,8 +1,11 @@
 import { Context } from 'koa';
 import File from '../models/File';
 import downloadQueue from '../queue';
+import downloadService from 'src/services/downloadService';
 
 class FileController {
+
+  static urls: Array<string>;
 
   static async init(ctx: Context) {
     ctx.response.body = "Hello"
@@ -11,6 +14,7 @@ class FileController {
   static async create(ctx: Context) {
     try {
       const { url } = ctx.request.body as any;
+      this.urls.push(url);
 
       downloadQueue.add({ url });
 
@@ -53,10 +57,10 @@ class FileController {
   }
 
   // Обновление файла (Update)
-  static async update() {
-    /*const files = await File.findAll();
+  static async update(url: string) {
+    const files = await File.findAll();
     
-    const newFiles = await downloadService(files[0].url);
+    const newFiles = await downloadService(url);
 
     const newFilesToAdd = newFiles.filter(newFile => 
       !files.some(file => file.name === newFile.name)
@@ -68,27 +72,21 @@ class FileController {
         name: newFile.name,
         data: newFile.data
       });
-    }*/
+    }
   }
   
 
   // Удаление файла (Delete)
-  static async delete() {
-    /*const oldFiles = await File.findAll();
-    
-    const files = await downloadService(oldFiles[0].url);
+  static async delete(ctx: Context) {
+    const {id} = ctx.request.query;
 
-    const filesToDelete = oldFiles.filter(oldFile => 
-      !files.some(file => file.name === oldFile.name)
-    );
+    await File.destroy({
+      where: {
+        id: id
+      }
+    });
 
-    for (const file of filesToDelete) {
-      await File.destroy({
-        where: {
-          name: file.name
-        }
-      });
-    }*/
+    ctx.body = "File deleted!";
   }
 }
 
