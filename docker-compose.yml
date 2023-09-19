@@ -6,8 +6,9 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - db
+      - redis
     ports:
-      - "3000-3003:3000"
+      - "3000:3000"
     command: ["sh", "-c", "sleep 2 && npm start"]
 
   nginx:
@@ -18,6 +19,11 @@ services:
       - "80:80"
     depends_on:
       - app1
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
 
   db:
     image: postgres

@@ -5,6 +5,7 @@ class File extends Model {
   public id!: number;
   public name!: string;
   public url!: string;
+  public data!: Blob;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -25,7 +26,7 @@ File.init(
       allowNull: false,
     },
     data: {
-      type: new DataTypes.JSON(),
+      type: new DataTypes.BLOB('long'),
       allowNull: true,
     }
   },

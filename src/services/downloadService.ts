@@ -1,25 +1,26 @@
 import axios from 'axios';
 
-
 async function downloadService(url: string) {
     try {
         // Загружаем список файлов с сервера
-        const response = await axios.get(url);
-        const fileList = response.data;
-
-        // Массив для хранения загруженных файлов
+        const newUrl = url.replace(/\/ru\/search\?/, '/api/bec/search/document?');
+        
+        const response = await axios.get(newUrl);
+        
+        const files = response.data.results;
+        
+        
         const downloadedFiles = [];
 
-        // Загружаем каждый файл по очереди (или параллельно с использованием Promise.all)
-        for (const fileMeta of fileList) {
-            const fileResponse = await axios.get(fileMeta.url, { responseType: 'arraybuffer' });
-
+        for(const file of files){
+            console.log(file)
             downloadedFiles.push({
-                url: fileMeta.url,
-                name: fileMeta.name,
-                data: fileResponse.data
-            });
+                url: "https://www.beckmancoulter.com"+file.url,
+                name: file.title,
+                data: file.data
+            })
         }
+        
 
         return downloadedFiles;
     } catch (error) {

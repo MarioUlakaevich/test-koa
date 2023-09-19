@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import File from '../models/File';
-import downloadService from '../services/downloadService';
+import downloadQueue from '../queue';
 
 class FileController {
 
@@ -12,16 +12,11 @@ class FileController {
     try {
       const { url } = ctx.request.body as any;
 
-      const files = await downloadService(url);
-
-      for(const file of files){
-
-          await File.create(file);
-      }
+      downloadQueue.add({ url });
 
       
       ctx.status = 200;
-      ctx.body = files;
+      ctx.body = "Your request is being processed!";
     } catch (error) {
       ctx.status = 400;
       ctx.body = error;
@@ -59,7 +54,7 @@ class FileController {
 
   // Обновление файла (Update)
   static async update() {
-    const files = await File.findAll();
+    /*const files = await File.findAll();
     
     const newFiles = await downloadService(files[0].url);
 
@@ -73,13 +68,13 @@ class FileController {
         name: newFile.name,
         data: newFile.data
       });
-    }
+    }*/
   }
   
 
   // Удаление файла (Delete)
   static async delete() {
-    const oldFiles = await File.findAll();
+    /*const oldFiles = await File.findAll();
     
     const files = await downloadService(oldFiles[0].url);
 
@@ -93,7 +88,7 @@ class FileController {
           name: file.name
         }
       });
-    }
+    }*/
   }
 }
 
